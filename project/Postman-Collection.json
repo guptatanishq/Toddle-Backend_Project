@@ -1,0 +1,311 @@
+{
+  "info": {
+    "name": "Journal App API",
+    "description": "A collection for testing the Journal App microservice API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"teacher1\",\n    \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Authenticate user and get JWT token"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Journals",
+      "item": [
+        {
+          "name": "Create Journal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Math Lesson",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Students learned about fractions today.",
+                  "type": "text"
+                },
+                {
+                  "key": "studentIds",
+                  "value": "[1, 2]",
+                  "type": "text"
+                },
+                {
+                  "key": "publishedAt",
+                  "value": "2023-12-20T12:00:00.000Z",
+                  "type": "text"
+                },
+                {
+                  "key": "attachments",
+                  "type": "file",
+                  "src": "/path/to/file.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/journals",
+              "host": ["{{base_url}}"],
+              "path": ["api", "journals"]
+            },
+            "description": "Create a new journal (teacher only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Journal",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Updated Math Lesson",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Students learned about advanced fractions today.",
+                  "type": "text"
+                },
+                {
+                  "key": "studentIds",
+                  "value": "[1, 2, 3]",
+                  "type": "text"
+                },
+                {
+                  "key": "attachments",
+                  "type": "file",
+                  "src": "/path/to/new-file.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/journals/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "journals", "1"]
+            },
+            "description": "Update an existing journal (teacher only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Journal",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/journals/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "journals", "1"]
+            },
+            "description": "Delete a journal (teacher only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Publish Journal",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"publishedAt\": \"2023-12-20T12:00:00.000Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/journals/1/publish",
+              "host": ["{{base_url}}"],
+              "path": ["api", "journals", "1", "publish"]
+            },
+            "description": "Publish a journal (teacher only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Journal Feed",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/journals/feed?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "journals", "feed"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get journal feed based on user role"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Journal by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/journals/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "journals", "1"]
+            },
+            "description": "Get a single journal by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Journal with Tagged Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Notification Test Journal",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "This journal is created to test notification for a specific student.",
+                  "type": "text"
+                },
+                {
+                  "key": "studentIds",
+                  "value": "[2]",
+                  "type": "text"
+                },
+                {
+                  "key": "publishedAt",
+                  "value": "2024-06-01T12:00:00.000Z",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/journals",
+              "host": ["{{base_url}}"],
+              "path": ["api", "journals"]
+            },
+            "description": "Create a new journal and tag a specific student by ID to test notification functionality."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
